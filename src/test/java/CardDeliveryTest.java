@@ -3,17 +3,23 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class CardDeliveryTest {
+    private String generateDate(int addDays, String pattern) {
+        return LocalDate.now().plusDays(addDays).format(DateTimeFormatter.ofPattern(pattern));
+    }
     @Test
     void shouldBookApointment() {
         open("http://localhost:9999");
         $("[data-test-id='city'] input").setValue("Москва");
-        $("[data-test-id='date'] input").click();
+        String currentDate;
+        currentDate = generateDate(4,"dd.MM.yyyy");
         $("[data-test-id='date'] input").sendKeys(Keys.CONTROL + "a");
         $("[data-test-id='date'] input").sendKeys(Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue("25.03.2023");
